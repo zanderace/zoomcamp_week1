@@ -1,0 +1,70 @@
+Question 1:
+
+--iidfile string
+
+Question 2:
+
+Command for docker file :- 
+
+    docker run -it --entrypoint=bash python:3.9
+
+    pip list
+
+3 items listed with pip:
+    pip 
+    setuptools
+    wheel
+
+Question 3:
+
+Answer: 20530
+
+Query:
+SELECT * 
+FROM green_tripdata_2019 
+WHERE CAST(lpep_pickup_datetime AS date) = '2019-01-15'
+AND
+CAST(lpep_dropoff_datetime AS date) = '2019-01-15'
+
+Question 4:
+
+Max trip = 117.99 on 15th Jan
+
+Query:
+select CAST(lpep_pickup_datetime AS date), max(trip_distance) 
+from green_tripdata_2019 
+GROUP BY CAST(lpep_pickup_datetime AS date) 
+ORDER BY max DESC
+
+Question 5:
+
+2 passengers = 1282
+3 passengers = 254
+
+SELECT 
+    COUNT(CASE WHEN CAST(lpep_pickup_datetime as date) = '2019-01-01' AND passenger_count = 2 THEN 1 END) AS passenger_2,
+    COUNT(CASE WHEN CAST(lpep_pickup_datetime as date) = '2019-01-01' AND passenger_count = 3 THEN 1 END) AS passenger_3
+FROM green_tripdata_2019
+
+Question 6:
+
+Long Island City/ Queens Plaza
+
+SELECT
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	tip_amount,
+	CONCAT(zpu."Borough", ' / ', zpu."Zone") AS "pick_up_loc",
+	CONCAT(zdo."Borough", ' / ', zdo."Zone") AS "drop_off_loc"
+	
+FROM
+	green_tripdata_2019 t,
+	taxi_zone_lookup zpu,
+	taxi_zone_lookup zdo
+WHERE
+	t."PULocationID" = zpu."LocationID" AND
+	t."DOLocationID" = zdo."LocationID" AND
+	zpu."Zone" = 'Astoria'
+ORDER BY tip_amount DESC
+
+
